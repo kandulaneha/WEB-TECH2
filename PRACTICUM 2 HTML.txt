@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Browse medical tests, packages and book an appointment at Meridian Diagnostic Centre.">
+  <title>Meridian Diagnostic Centre | Medical Tests &amp; Online Booking</title>
+
+  <style>
+    :root {
+      --ink: #14262c;
+      --muted: #4d6168;
+      --paper: #f5f8f7;
+      --white: #ffffff;
+      --teal: #0e6f75;
+      --teal-dark: #0a4f54;
+      --line: #cfdcda;
+      --signal: #b8480f;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+      line-height: 1.6;
+      color: var(--ink);
+      background: var(--paper);
+    }
+    a { color: var(--teal); }
+    a:focus-visible, button:focus-visible, input:focus-visible,
+    select:focus-visible, textarea:focus-visible {
+      outline: 3px solid var(--signal);
+      outline-offset: 2px;
+    }
+    h1, h2, h3 { font-family: Georgia, "Times New Roman", serif; line-height: 1.2; }
+    h1 { font-size: 2.4rem; margin: 0 0 .5rem; }
+    h2 { font-size: 1.7rem; margin-top: 0; }
+    h3 { font-size: 1.2rem; margin-top: 0; }
+
+    /* Header and navigation */
+    header.site-header { background: var(--teal-dark); color: var(--white); }
+    .header-inner {
+      max-width: 1050px; margin: 0 auto; padding: 1.2rem 1rem .8rem;
+      display: flex; flex-wrap: wrap; align-items: center; gap: 1rem;
+      justify-content: space-between;
+    }
+    .brand { display: flex; align-items: center; gap: .8rem; }
+    .brand img { width: 52px; height: 52px; }
+    .brand h1 { font-size: 1.6rem; margin: 0; }
+    .brand p { margin: 0; font-size: .9rem; opacity: .85; }
+    nav ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: .3rem 1.2rem; }
+    nav a { color: var(--white); text-decoration: none; padding: .3rem 0; border-bottom: 2px solid transparent; }
+    nav a:hover { border-bottom-color: var(--white); }
+
+    /* Layout */
+    main { max-width: 1050px; margin: 0 auto; padding: 0 1rem 2rem; }
+    main > section { padding: 2.2rem 0; border-bottom: 1px solid var(--line); }
+    main > section:last-child { border-bottom: none; }
+
+    .hero { display: grid; grid-template-columns: 1.2fr 1fr; gap: 2rem; align-items: center; }
+    .hero img { width: 100%; height: auto; border-radius: 6px; }
+    .lede { font-size: 1.1rem; color: var(--muted); max-width: 60ch; }
+    .button {
+      display: inline-block; background: var(--signal); color: var(--white);
+      padding: .7rem 1.4rem; border-radius: 4px; text-decoration: none; font-weight: 600;
+      border: none; font-size: 1rem; cursor: pointer;
+    }
+    .button:hover { background: #983b0a; }
+
+    .test-groups { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.2rem; }
+    article.test-group { background: var(--white); border: 1px solid var(--line); border-radius: 6px; padding: 1.2rem; }
+    article.test-group img { width: 48px; height: 48px; }
+    article.test-group ul { padding-left: 1.2rem; margin-bottom: 0; }
+
+    /* Table */
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; background: var(--white); min-width: 640px; }
+    caption { text-align: left; padding: .6rem 0; color: var(--muted); font-size: .95rem; }
+    th, td { border: 1px solid var(--line); padding: .6rem .8rem; text-align: left; vertical-align: top; }
+    thead th { background: var(--teal); color: var(--white); }
+    tbody tr:nth-child(even) { background: #eef4f3; }
+    td.price { white-space: nowrap; font-variant-numeric: tabular-nums; }
+
+    .packages { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.2rem; }
+    .packages article { background: var(--white); border: 1px solid var(--line); border-left: 5px solid var(--teal); padding: 1.2rem; border-radius: 4px; }
+    .packages .cost { font-size: 1.4rem; font-weight: 700; color: var(--signal); margin: .2rem 0 .6rem; }
+
+    /* Booking */
+    .booking-layout { display: grid; grid-template-columns: 1.5fr 1fr; gap: 2rem; align-items: start; }
+    form { background: var(--white); border: 1px solid var(--line); border-radius: 6px; padding: 1.4rem; }
+    fieldset { border: 1px solid var(--line); border-radius: 4px; margin: 0 0 1rem; padding: .8rem 1rem 1rem; }
+    legend { font-weight: 600; padding: 0 .4rem; }
+    .field { margin-bottom: .9rem; }
+    label { display: block; font-weight: 600; margin-bottom: .25rem; }
+    input[type="text"], input[type="tel"], input[type="email"], input[type="date"],
+    select, textarea {
+      width: 100%; padding: .55rem .6rem; font: inherit;
+      border: 1px solid #8fa3a1; border-radius: 4px; background: var(--white);
+    }
+    .checks label { font-weight: 400; display: flex; gap: .5rem; align-items: center; margin-bottom: .3rem; }
+    aside { background: var(--white); border: 1px solid var(--line); border-radius: 6px; padding: 1.2rem; }
+    aside h3 { margin-bottom: .4rem; }
+    aside dl { margin: 0; }
+    aside dt { font-weight: 600; }
+    aside dd { margin: 0 0 .7rem; color: var(--muted); }
+
+    /* Multimedia */
+    figure { margin: 0; }
+    figcaption { font-size: .9rem; color: var(--muted); padding-top: .4rem; }
+    .hero-figure img { display: block; }
+    .gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.2rem; margin-bottom: 2rem; }
+    .gallery figure { background: var(--white); border: 1px solid var(--line); border-radius: 6px; padding: .6rem .6rem .8rem; }
+    .gallery img { width: 100%; height: auto; display: block; border-radius: 4px; }
+    .media-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 2rem; align-items: start; margin-bottom: 2rem; }
+    video { width: 100%; height: auto; display: block; border-radius: 6px; background: #000; }
+    audio { width: 100%; margin-top: .4rem; }
+    .media-card { background: var(--white); border: 1px solid var(--line); border-radius: 6px; padding: 1rem; }
+    .map-frame { width: 100%; height: 360px; border: 1px solid var(--line); border-radius: 6px; display: block; background: var(--white); }
+    details { margin-top: .6rem; }
+    summary { cursor: pointer; color: var(--teal); font-weight: 600; }
+    @media (max-width: 760px) { .media-grid { grid-template-columns: 1fr; } }
+
+    /* Footer */
+    footer { background: var(--ink); color: #d6e2e0; }
+    .footer-inner {
+      max-width: 1050px; margin: 0 auto; padding: 1.8rem 1rem;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem;
+    }
+    footer h2 { font-size: 1.1rem; color: var(--white); }
+    footer a { color: #9fd8dc; }
+    footer ul { list-style: none; margin: 0; padding: 0; }
+    footer address { font-style: normal; }
+    .copyright { text-align: center; padding: .9rem 1rem; border-top: 1px solid #2c4249; font-size: .9rem; }
+
+    @media (max-width: 760px) {
+      .hero, .booking-layout { grid-template-columns: 1fr; }
+      h1 { font-size: 1.9rem; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ============ HEADER & NAVIGATION ============ -->
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand">
+        <img alt="Meridian Diagnostic Centre logo"
+             src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23ffffff'/%3E%3Cpath d='M26 14h12v14l10 18a6 6 0 0 1-5 9H21a6 6 0 0 1-5-9l10-18z' fill='none' stroke='%230a4f54' stroke-width='4' stroke-linejoin='round'/%3E%3Cpath d='M22 42h20' stroke='%23b8480f' stroke-width='4'/%3E%3C/svg%3E">
+        <div>
+          <h1>Meridian Diagnostic Centre</h1>
+          <p>Accurate tests. Clear reports. Easy booking.</p>
+        </div>
+      </div>
+
+      <nav aria-label="Main navigation">
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#tests">Tests</a></li>
+          <li><a href="#price-list">Price list</a></li>
+          <li><a href="#packages">Health packages</a></li>
+          <li><a href="#media">Our centre</a></li>
+          <li><a href="#how-it-works">How it works</a></li>
+          <li><a href="#book">Book a test</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ============ HERO SECTION ============ -->
+    <section id="home" class="hero" aria-labelledby="hero-title">
+      <div>
+        <h2 id="hero-title" style="font-size:2rem;">Book your medical tests in minutes</h2>
+        <p class="lede">
+          Meridian Diagnostic Centre offers blood tests, imaging, heart and
+          hormone screening under one roof. Pick your tests, choose a time,
+          and we will have your report ready, usually within a day.
+        </p>
+        <p><a class="button" href="#book">Book an appointment</a></p>
+        <p>Prefer to talk? Call <a href="tel:+914400000000">+91 44 0000 0000</a>.</p>
+      </div>
+      <figure class="hero-figure">
+      <img alt="Illustration of laboratory test tubes in a rack"
+           src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 480 340'%3E%3Crect width='480' height='340' fill='%23dcebe9'/%3E%3Crect x='70' y='210' width='340' height='28' rx='6' fill='%230a4f54'/%3E%3Cg stroke='%230a4f54' stroke-width='6' fill='%23ffffff'%3E%3Crect x='100' y='70' width='44' height='150' rx='22'/%3E%3Crect x='170' y='70' width='44' height='150' rx='22'/%3E%3Crect x='240' y='70' width='44' height='150' rx='22'/%3E%3Crect x='310' y='70' width='44' height='150' rx='22'/%3E%3C/g%3E%3Crect x='106' y='150' width='32' height='64' rx='16' fill='%23b8480f'/%3E%3Crect x='176' y='125' width='32' height='89' rx='16' fill='%230e6f75'/%3E%3Crect x='246' y='170' width='32' height='44' rx='16' fill='%23b8480f'/%3E%3Crect x='316' y='140' width='32' height='74' rx='16' fill='%230e6f75'/%3E%3Ctext x='240' y='290' font-family='Georgia' font-size='26' text-anchor='middle' fill='%2314262c'%3ETrusted results%3C/text%3E%3C/svg%3E" width="480" height="340">
+      <figcaption>Every sample is labelled and tracked from collection to report.</figcaption>
+    </figure>
+    </section>
+
+    <!-- ============ TEST CATEGORIES ============ -->
+    <section id="tests" aria-labelledby="tests-title">
+      <h2 id="tests-title">Tests we offer</h2>
+      <p class="lede">Choose from our main test categories. Each one lists the common tests included.</p>
+
+      <div class="test-groups">
+        <article class="test-group">
+          <img alt="Blood drop icon"
+               src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cpath d='M24 4C16 16 10 23 10 31a14 14 0 0 0 28 0c0-8-6-15-14-27z' fill='%23b8480f'/%3E%3C/svg%3E">
+          <h3>Blood tests</h3>
+          <p>Routine and specialised tests from a small blood sample.</p>
+          <ul>
+            <li>Complete Blood Count (CBC)</li>
+            <li>Blood sugar (fasting and post-meal)</li>
+            <li>Lipid profile</li>
+            <li>Liver and kidney function</li>
+          </ul>
+        </article>
+
+        <article class="test-group">
+          <img alt="Scan icon"
+               src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Ccircle cx='24' cy='24' r='18' fill='none' stroke='%230e6f75' stroke-width='5'/%3E%3Ccircle cx='24' cy='24' r='7' fill='%230e6f75'/%3E%3C/svg%3E">
+          <h3>Imaging and scans</h3>
+          <p>Painless scans reported by qualified radiologists.</p>
+          <ul>
+            <li>X-ray</li>
+            <li>Ultrasound (abdomen and pelvis)</li>
+            <li>ECG</li>
+            <li>Echocardiogram</li>
+          </ul>
+        </article>
+
+        <article class="test-group">
+          <img alt="Hormone and thyroid icon"
+               src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cpath d='M8 30c4-18 12-18 16-8 4-10 12-10 16 8-8-4-12 0-16 6-4-6-8-10-16-6z' fill='%230a4f54'/%3E%3C/svg%3E">
+          <h3>Hormone and thyroid</h3>
+          <p>Tests that help find the cause of tiredness, weight change and more.</p>
+          <ul>
+            <li>Thyroid profile (T3, T4, TSH)</li>
+            <li>Vitamin D and B12</li>
+            <li>HbA1c (3-month sugar average)</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <!-- ============ PRICE LIST (TABLE) ============ -->
+    <section id="price-list" aria-labelledby="price-title">
+      <h2 id="price-title">Test price list</h2>
+
+      <div class="table-wrap">
+        <table>
+          <caption>Prices are in Indian rupees (INR) and include sample collection at the centre.</caption>
+          <thead>
+            <tr>
+              <th scope="col">Test</th>
+              <th scope="col">Preparation</th>
+              <th scope="col">Report time</th>
+              <th scope="col">Price (INR)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">Complete Blood Count (CBC)</th>
+              <td>No fasting needed</td>
+              <td>Same day</td>
+              <td class="price">350</td>
+            </tr>
+            <tr>
+              <th scope="row">Fasting Blood Sugar</th>
+              <td>Fast for 8 to 10 hours</td>
+              <td>Same day</td>
+              <td class="price">120</td>
+            </tr>
+            <tr>
+              <th scope="row">Lipid Profile</th>
+              <td>Fast for 10 to 12 hours</td>
+              <td>Same day</td>
+              <td class="price">600</td>
+            </tr>
+            <tr>
+              <th scope="row">Thyroid Profile (T3, T4, TSH)</th>
+              <td>No fasting needed</td>
+              <td>Next day</td>
+              <td class="price">550</td>
+            </tr>
+            <tr>
+              <th scope="row">Vitamin D (25-OH)</th>
+              <td>No fasting needed</td>
+              <td>Next day</td>
+              <td class="price">1,100</td>
+            </tr>
+            <tr>
+              <th scope="row">Chest X-ray</th>
+              <td>Remove metal items</td>
+              <td>Within 2 hours</td>
+              <td class="price">450</td>
+            </tr>
+            <tr>
+              <th scope="row">Ultrasound Abdomen</th>
+              <td>Fast for 6 hours, full bladder</td>
+              <td>Same day</td>
+              <td class="price">1,200</td>
+            </tr>
+            <tr>
+              <th scope="row">ECG</th>
+              <td>No preparation</td>
+              <td>Immediate</td>
+              <td class="price">300</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ============ HEALTH PACKAGES ============ -->
+    <section id="packages" aria-labelledby="packages-title">
+      <h2 id="packages-title">Health check packages</h2>
+      <p class="lede">Bundled tests at a lower price than booking each one separately.</p>
+
+      <div class="packages">
+        <article>
+          <h3>Basic Health Check</h3>
+          <p class="cost">INR 999</p>
+          <ul>
+            <li>CBC</li>
+            <li>Fasting blood sugar</li>
+            <li>Lipid profile</li>
+            <li>Urine routine</li>
+          </ul>
+        </article>
+
+        <article>
+          <h3>Heart Care Package</h3>
+          <p class="cost">INR 2,499</p>
+          <ul>
+            <li>Lipid profile</li>
+            <li>ECG</li>
+            <li>Echocardiogram</li>
+            <li>Doctor consultation</li>
+          </ul>
+        </article>
+
+        <article>
+          <h3>Senior Citizen Package</h3>
+          <p class="cost">INR 3,999</p>
+          <ul>
+            <li>Full blood and sugar panel</li>
+            <li>Thyroid and Vitamin D</li>
+            <li>Kidney and liver function</li>
+            <li>Chest X-ray and ECG</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <!-- ============ MULTIMEDIA: IMAGES, VIDEO, AUDIO, IFRAME ============ -->
+    <section id="media" aria-labelledby="media-title">
+      <h2 id="media-title">Inside our centre</h2>
+      <p class="lede">See our facilities, watch how to prepare for a test, and find us on the map.</p>
+
+      <!-- Images with captions -->
+      <div class="gallery">
+        <figure>
+          <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 260'%3E%3Crect width='400' height='260' fill='%23dcebe9'/%3E%3Crect x='40' y='170' width='320' height='24' rx='5' fill='%230a4f54'/%3E%3Cpath d='M180 50h40v60l36 60a14 14 0 0 1-12 20H156a14 14 0 0 1-12-20l36-60z' fill='%23fff' stroke='%230a4f54' stroke-width='6' stroke-linejoin='round'/%3E%3Cpath d='M158 150h84l14 22H144z' fill='%23b8480f'/%3E%3Ccircle cx='80' cy='140' r='18' fill='%230e6f75'/%3E%3Ccircle cx='320' cy='130' r='24' fill='%230e6f75'/%3E%3C/svg%3E" width="400" height="260" loading="lazy"
+               alt="Illustration of a laboratory flask on a bench between two sample circles">
+          <figcaption>Pathology laboratory: blood, urine and hormone tests are processed here.</figcaption>
+        </figure>
+        <figure>
+          <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 260'%3E%3Crect width='400' height='260' fill='%23e8efe9'/%3E%3Crect x='60' y='40' width='280' height='170' rx='16' fill='%23fff' stroke='%230a4f54' stroke-width='6'/%3E%3Ccircle cx='200' cy='125' r='50' fill='none' stroke='%230e6f75' stroke-width='14'/%3E%3Ccircle cx='200' cy='125' r='18' fill='%23b8480f'/%3E%3Crect x='110' y='218' width='180' height='16' rx='8' fill='%230a4f54'/%3E%3C/svg%3E" width="400" height="260" loading="lazy"
+               alt="Illustration of a scanner ring on a scanning table">
+          <figcaption>Imaging room: X-ray, ultrasound and echocardiogram.</figcaption>
+        </figure>
+        <figure>
+          <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 260'%3E%3Crect width='400' height='260' fill='%23f1e6dc'/%3E%3Crect x='50' y='130' width='300' height='70' rx='8' fill='%230a4f54'/%3E%3Crect x='80' y='70' width='110' height='70' rx='6' fill='%23fff' stroke='%230e6f75' stroke-width='6'/%3E%3Ccircle cx='290' cy='90' r='26' fill='%23b8480f'/%3E%3Crect x='262' y='118' width='56' height='30' rx='14' fill='%23b8480f'/%3E%3Crect x='95' y='85' width='80' height='8' fill='%230e6f75'/%3E%3Crect x='95' y='105' width='55' height='8' fill='%230e6f75'/%3E%3C/svg%3E" width="400" height="260" loading="lazy"
+               alt="Illustration of a reception desk with a staff member and a monitor">
+          <figcaption>Reception: check in, ask about reports and book follow-up visits.</figcaption>
+        </figure>
+      </div>
+
+      <!-- Video + audio -->
+      <div class="media-grid">
+        <figure class="media-card">
+          <video controls preload="metadata" poster="media/test-preparation-poster.jpg" width="960" height="540">
+            <source src="media/test-preparation.mp4" type="video/mp4">
+            <track kind="captions" src="media/test-preparation.vtt" srclang="en" label="English" default>
+            Your browser does not support the video tag.
+            <a href="media/test-preparation.mp4">Download the video</a>.
+          </video>
+          <figcaption>
+            Video: how to prepare for a blood test (16 seconds, English captions available).
+          </figcaption>
+          <details>
+            <summary>Read the video transcript</summary>
+            <p>Preparing for your blood test at Meridian Diagnostic Centre. For fasting tests, do not eat for 8 to 12 hours; water is allowed. Bring a photo ID and any previous reports. Ready to book? Use the booking form on this page.</p>
+          </details>
+        </figure>
+
+        <figure class="media-card">
+          <h3>Waiting-room music</h3>
+          <audio controls preload="none">
+            <source src="media/waiting-room-tune.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+            <a href="media/waiting-room-tune.mp3">Download the audio</a>.
+          </audio>
+          <figcaption>
+            Audio: a calming instrumental tune played in our waiting area. There is no speech, so no transcript is needed.
+          </figcaption>
+        </figure>
+      </div>
+
+      <!-- Embedded map (iframe) -->
+      <h3>Find us</h3>
+      <iframe class="map-frame"
+              title="Map showing the location of Meridian Diagnostic Centre in Chennai"
+              src="https://www.google.com/maps?q=Chennai,Tamil+Nadu&amp;output=embed"
+              loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen>
+      </iframe>
+      <p>
+        Map not loading?
+        <a href="https://www.google.com/maps/search/?api=1&amp;query=Chennai+Tamil+Nadu" target="_blank" rel="noopener">Open it in Google Maps</a>.
+      </p>
+    </section>
+
+    <!-- ============ HOW IT WORKS (ORDERED LIST) ============ -->
+    <section id="how-it-works" aria-labelledby="how-title">
+      <h2 id="how-title">How booking works</h2>
+      <ol>
+        <li>Choose your tests from the price list or select a health package.</li>
+        <li>Fill in the booking form with your details and preferred date and time.</li>
+        <li>Receive a confirmation call or message from our team.</li>
+        <li>Visit the centre, or choose home sample collection where available.</li>
+        <li>Download your report online or collect a printed copy.</li>
+      </ol>
+      <p>
+        New to testing? Read our
+        <a href="https://www.who.int/health-topics/laboratory-services" target="_blank" rel="noopener">guide to laboratory services (WHO)</a>
+        to learn what common tests measure.
+      </p>
+    </section>
+
+    <!-- ============ BOOKING FORM ============ -->
+    <section id="book" aria-labelledby="book-title">
+      <h2 id="book-title">Book an appointment</h2>
+
+      <div class="booking-layout">
+        <form action="#" method="post">
+          <fieldset>
+            <legend>Patient details</legend>
+            <div class="field">
+              <label for="name">Full name</label>
+              <input type="text" id="name" name="name" required>
+            </div>
+            <div class="field">
+              <label for="age">Age</label>
+              <input type="text" id="age" name="age" inputmode="numeric" required>
+            </div>
+            <div class="field">
+              <label for="phone">Mobile number</label>
+              <input type="tel" id="phone" name="phone" required>
+            </div>
+            <div class="field">
+              <label for="email">Email address</label>
+              <input type="email" id="email" name="email">
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Test selection</legend>
+            <div class="field">
+              <label for="package">Health package (optional)</label>
+              <select id="package" name="package">
+                <option value="">No package</option>
+                <option>Basic Health Check</option>
+                <option>Heart Care Package</option>
+                <option>Senior Citizen Package</option>
+              </select>
+            </div>
+            <div class="checks">
+              <p style="margin:0 0 .3rem;font-weight:600;">Individual tests</p>
+              <label><input type="checkbox" name="tests" value="cbc"> Complete Blood Count</label>
+              <label><input type="checkbox" name="tests" value="sugar"> Fasting Blood Sugar</label>
+              <label><input type="checkbox" name="tests" value="lipid"> Lipid Profile</label>
+              <label><input type="checkbox" name="tests" value="thyroid"> Thyroid Profile</label>
+              <label><input type="checkbox" name="tests" value="vitd"> Vitamin D</label>
+              <label><input type="checkbox" name="tests" value="xray"> Chest X-ray</label>
+              <label><input type="checkbox" name="tests" value="usg"> Ultrasound Abdomen</label>
+              <label><input type="checkbox" name="tests" value="ecg"> ECG</label>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Appointment</legend>
+            <div class="field">
+              <label for="date">Preferred date</label>
+              <input type="date" id="date" name="date" required>
+            </div>
+            <div class="field">
+              <label for="slot">Time slot</label>
+              <select id="slot" name="slot" required>
+                <option value="">Select a slot</option>
+                <option>7:00 AM to 9:00 AM (fasting tests)</option>
+                <option>9:00 AM to 12:00 PM</option>
+                <option>12:00 PM to 4:00 PM</option>
+                <option>4:00 PM to 7:00 PM</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="notes">Notes (optional)</label>
+              <textarea id="notes" name="notes" rows="3"></textarea>
+            </div>
+          </fieldset>
+
+          <button type="submit" class="button">Confirm booking</button>
+        </form>
+
+        <aside aria-labelledby="hours-title">
+          <h3 id="hours-title">Centre hours</h3>
+          <dl>
+            <dt>Monday to Saturday</dt>
+            <dd>7:00 AM to 7:00 PM</dd>
+            <dt>Sunday</dt>
+            <dd>7:00 AM to 1:00 PM</dd>
+            <dt>Home collection</dt>
+            <dd>6:30 AM to 10:00 AM, on request</dd>
+          </dl>
+          <p>Bring a photo ID and any previous reports or doctor's prescription.</p>
+        </aside>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer id="contact">
+    <div class="footer-inner">
+      <section aria-labelledby="visit-title">
+        <h2 id="visit-title">Visit us</h2>
+        <address>
+          Meridian Diagnostic Centre<br>
+          12, Lake View Road<br>
+          Chennai, Tamil Nadu 600 000
+        </address>
+      </section>
+
+      <section aria-labelledby="reach-title">
+        <h2 id="reach-title">Contact</h2>
+        <ul>
+          <li>Phone: <a href="tel:+914400000000">+91 44 0000 0000</a></li>
+          <li>Email: <a href="mailto:care@meridiandiagnostics.example">care@meridiandiagnostics.example</a></li>
+        </ul>
+      </section>
+
+      <section aria-labelledby="links-title">
+        <h2 id="links-title">Quick links</h2>
+        <ul>
+          <li><a href="#tests">Tests</a></li>
+          <li><a href="#price-list">Price list</a></li>
+          <li><a href="#packages">Health packages</a></li>
+          <li><a href="#media">Our centre</a></li>
+          <li><a href="#book">Book a test</a></li>
+        </ul>
+      </section>
+    </div>
+    <p class="copyright">&copy; 2026 Meridian Diagnostic Centre. Test results should be reviewed by a qualified doctor.</p>
+  </footer>
+
+</body>
+</html>
+WEBVTT
+
+00:00.000 --> 00:04.000
+Preparing for your blood test at Meridian Diagnostic Centre.
+
+00:04.000 --> 00:08.000
+For fasting tests, do not eat for 8 to 12 hours. Water is allowed.
+
+00:08.000 --> 00:12.000
+Bring a photo ID and any previous reports.
+
+00:12.000 --> 00:16.000
+Ready to book? Use the booking form on this page.
+V
